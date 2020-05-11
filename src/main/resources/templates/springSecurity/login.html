@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head th:replace="layout/layout :: head"></head>
+
+	<body>
+		<header th:replace="layout/layout :: header"></header>
+
+		<div class="container py-4">
+			<div class="card">
+				<div class="card-header" th:text="${titulo}"></div>
+				<div class="card-body">
+					<form th:action="@{/login}" method="POST">
+						<div class="form-group col-sm-6">
+							<input
+								required
+								autofocus
+								class="form-control"
+								placeholder="username"
+								type="text"
+								name="username"
+								id="username"
+							/>
+						</div>
+
+						<div class="form-group col-sm-6">
+							<input
+								required
+								class="form-control"
+								placeholder="password"
+								type="password"
+								name="password"
+								id="password"
+							/>
+						</div>
+
+						<div class="form-group col-sm-6">
+							<input
+								type="submit"
+								class="btn btn-primary btn-block"
+								value="Inicar Sesión"
+							/>
+						</div>
+					</form>
+
+					<div class="col-sm-6 border border-info pl-2">
+						<p>Puede usar los usuarios de prueba:</p>
+						<ul>
+							<li>Username: <b>admin</b> / Password: <b>admin</b></li>
+							<li>Username: <b>biblio</b> / Password: <b>biblio</b></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<footer th:replace="layout/layout :: footer"></footer>
+	</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <body>
+    <nav th:fragment="paginator">
+      <ul class="pagination justify-content-center">
+        <li class="page-item" th:classappend="${page.first} ? 'disabled' : ''">
+          <a class="page-link" th:href="@{${page.url}(page=0)}">Primera</a>
+        </li>
+        <li
+          class="page-item"
+          th:classappend="${not page.hasPrevious()} ? 'disabled' : ''"
+        >
+          <a
+            class="page-link"
+            th:href="@{${page.url}(page=${page.paginaActual - 2})}"
+            >&laquo;</a
+          >
+        </li>
+        <li
+          class="page-item"
+          th:each="item : ${page.paginas}"
+          th:classappend="${item.actual} ? 'active' : ''"
+        >
+          <a
+            class="page-link"
+            th:href="@{${page.url}(page=${item.numero - 1})}"
+            th:text="${item.numero}"
+          ></a>
+        </li>
+        <li
+          class="page-item"
+          th:classappend="${not page.hasNext()} ? 'disabled' : ''"
+        >
+          <a
+            class="page-link"
+            th:href="@{${page.url}(page=${page.paginaActual})}"
+            >&raquo;</a
+          >
+        </li>
+        <li class="page-item" th:classappend="${page.last} ? 'disabled' : ''">
+          <a
+            class="page-link"
+            th:href="@{${page.url}(page=${page.totalPaginas - 1})}"
+            >Última</a
+          >
+        </li>
+      </ul>
+    </nav>
+  </body>
+</html>

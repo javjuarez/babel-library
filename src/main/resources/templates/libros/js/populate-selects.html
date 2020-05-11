@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <body>
+    <script type="text/javascript" th:fragment="javascript">
+      $(document).ready(function () {
+
+        $("#localizacion\\.sala").on("change", function () {
+          let sala = $(this).val();
+
+          $.ajax({
+            type: "post",
+            url: "/cargar-libreros",
+            data: {
+                sala
+            },
+            success: function (response) {
+              let len = response.length;
+
+              const libreroSel = $("#localizacion\\.librero");
+              libreroSel.empty();
+              libreroSel.append("<option selected value=''>--Elija una opción--</option>");
+              for (let index = 0; index < len; index++) {
+                  const element = response[index];
+                  libreroSel.append("<option value = '" + element[0] + "'>" + element[0] + "</option>");
+              }
+              if (libreroSel.find("option").length === 1) {
+                libreroSel.prop("disabled", true);
+              } else {
+                libreroSel.prop("disabled", false);
+              }
+            },
+          });
+        });
+
+        $("#localizacion\\.librero").on("change", function () {
+          let librero = $(this).val();
+
+          $.ajax({
+            type: "post",
+            url: "/cargar-estantes",
+            data: {
+                librero
+            },
+            success: function (response) {
+              let len = response.length;
+
+              const estanteSel = $("#localizacion\\.estante");
+              estanteSel.empty();
+              estanteSel.append("<option selected value=''>--Elija una opción--</option>");
+              for (let index = 0; index < len; index++) {
+                  const element = response[index];
+                  estanteSel.append("<option value = '" + element[0] + "'>" + element[0] + "</option>");
+              }
+              if (estanteSel.find("option").length === 1) {
+                estanteSel.prop("disabled", true);
+              } else {
+                estanteSel.prop("disabled", false);
+              }
+            },
+          });
+        });
+
+
+      });
+    </script>
+  </body>
+</html>

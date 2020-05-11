@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
+	<head th:replace="layout/layout :: head"></head>
+
+	<body>
+		<header th:replace="layout/layout :: header"></header>
+
+		<div class="container my-4">
+			<div class="card">
+				<div class="card-header bg-info text-white" th:text="${titulo}"></div>
+				<div class="card-body">
+					<h5 class="card-title" th:text="${subtitulo}"></h5>
+					<p class="text-info text-center" th:if="${libros.totalPages == 0}">
+						No hay libros registrados
+					</p>
+					<table class="table table-striped table-hover text-center">
+						<thead class="thead-dark">
+							<tr>
+								<th></th>
+								<th>Título</th>
+								<th>Autor</th>
+								<th>Editorial</th>
+								<th>Publicación</th>
+								<!-- <th>Detalles</th> -->
+								<th sec:authorize="hasRole('ROLE_BIBLIO')">Herramientas</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="libro : ${libros}">
+								<td>
+									<a th:href="@{/ver/} + ${libro.id}">
+										<img
+											style="width: 25%;"
+											th:if="${#strings.length(libro.portada) > 0}"
+											th:src="@{'/upload/' + ${libro.portada}}"
+											th:alt="${libro.portada}"
+										/>
+										<img
+											style="width: 25%;"
+											th:if="${#strings.length(libro.portada) == 0}"
+											th:src="@{'/upload/noCover'}"
+											th:alt="${libro.portada}"
+										/>
+									</a>
+								</td>
+								<td th:text="${libro.titulo}"></td>
+								<td th:text="${libro.autor}"></td>
+								<td th:text="${libro.editorial}"></td>
+								<td th:text="${libro.fechaPublicacion}"></td>
+								<!-- <td>
+									<a
+										th:href="@{/ver/} + ${libro.id}"
+										class="btn btn-outline-info btn-block"
+									>
+										<i class="fas fa-book-reader"></i>
+									</a>
+								</td> -->
+								<td sec:authorize="hasRole('ROLE_BIBLIO')">
+									<a
+										th:href="@{/eliminar/} + ${libro.id}"
+										sec:authorize="hasRole('ROLE_ADMIN')"
+										class="btn btn-danger"
+										data-toggle="popover"
+										data-placement="top"
+										data-content="Eliminar"
+										data-trigger="hover"
+										onclick="return confirm('¿Quiere eliminar el registro?')"
+										><i class="fas fa-trash-alt"></i
+									></a>
+									<a
+										th:href="@{/editar/} + ${libro.id}"
+										sec:authorize="hasRole('ROLE_BIBLIO')"
+										class="btn btn-success"
+										data-toggle="popover"
+										data-placement="top"
+										data-content="Editar"
+										data-trigger="hover"
+										><i class="fas fa-edit"></i
+									></a>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<nav th:replace="layout/paginator-nav :: paginator"></nav>
+				</div>
+			</div>
+		</div>
+
+		<footer th:replace="layout/layout :: footer"></footer>
+		<script type="text/javascript">
+			$(function () {
+				$('[data-toggle="popover"]').popover();
+			});
+		</script>
+	</body>
+</html>

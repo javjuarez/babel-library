@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head th:replace="layout/layout :: head"></head>
+
+  <body>
+    <header th:replace="layout/layout :: header"></header>
+
+    <div class="container py-4">
+      <div class="card">
+        <div class="card-header bg-info text-white" th:text="${titulo}"></div>
+        <div class="card-body">
+          <img
+            class="img-thumbnail rounded float-left"
+            style="width: 25%;"
+            th:if="${#strings.length(libro.portada) > 0}"
+            th:src="@{'/upload/' + ${libro.portada}}"
+            th:alt="${libro.portada}"
+          />
+
+          <img
+            class="img-thumbnail rounded float-left"
+            style="width: 25%;"
+            th:if="${#strings.length(libro.portada) == 0}"
+            th:src="@{'/upload/noCover'}"
+            th:alt="${libro.portada}"
+          />
+
+          <dl class="row">
+            <dt class="col-sm-3">Título:</dt>
+            <dd class="col-sm-9" th:text="${libro.titulo}"></dd>
+            <dt class="col-sm-3">Autor:</dt>
+            <dd class="col-sm-9" th:text="${libro.autor}"></dd>
+            <dt class="col-sm-3">Editorial:</dt>
+            <dd class="col-sm-9" th:text="${libro.editorial}"></dd>
+            <dt class="col-sm-3">Fecha de publicación:</dt>
+            <dd
+              class="col-sm-9"
+              th:text="${#dates.day(libro.fechaPublicacion) + ' de ' + #dates.monthName(libro.fechaPublicacion) + ' de ' + #dates.year(libro.fechaPublicacion)}"
+            ></dd>
+            <dt class="col-sm-3">Sinopsis:</dt>
+            <dd
+              class="col-sm-9"
+              th:text="${#strings.length(libro.sinopsis) > 0 ? libro.sinopsis : 'No hay sinopsis disponible'}"
+            ></dd>
+
+            <dt class="col-sm-3">Ubicación:</dt>
+            <table
+              class="table table-bordered table-hover table-sm text-center ml-3 col-sm-12"
+              th:if="${#strings.length(libro.localizacion.sala) > 0 or
+                      #strings.length(libro.localizacion.librero) > 0 or
+                      #strings.length(libro.localizacion.estante) > 0}"
+            >
+              <thead>
+                <tr>
+                  <th>Sala</th>
+                  <th>Librero</th>
+                  <th>Estante</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td th:text="${libro.localizacion.sala}"></td>
+                  <td th:text="${libro.localizacion.librero}"></td>
+                  <td th:text="${libro.localizacion.estante}"></td>
+                </tr>
+              </tbody>
+            </table>
+            <dd
+              class="col-sm-9"
+              th:if="${#strings.length(libro.localizacion.sala) == 0 and
+              #strings.length(libro.localizacion.librero) == 0 and
+              #strings.length(libro.localizacion.estante) == 0}"
+            >
+              Ubicación no disponible
+            </dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+
+    <footer th:replace="layout/layout :: footer"></footer>
+  </body>
+</html>

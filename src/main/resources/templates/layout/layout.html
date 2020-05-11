@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html
+	xmlns:th="http://www.thymeleaf.org"	xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
+	<head th:fragment="head">
+		<meta charset="UTF-8" />
+		<title th:text="'Biblioteca Babel - ' + ${titulo}"></title>
+		<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+	</head>
+
+	<body>
+		<header th:fragment="header">
+			<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+				<a class="navbar-brand" th:href="@{/index}">Biblioteca Babel</a>
+				<button
+					class="navbar-toggler"
+					type="button"
+					data-toggle="collapse"
+					data-target="#navbarSupportedContent"
+					aria-controls="navbarSupportedContent"
+					aria-expanded="false"
+					aria-label="Toggle navigation"
+				>
+					<span class="navbar-toggler-icon"></span>
+				</button>
+
+				<div class="collapse navbar-collapse" id="navbarSupportedContent">
+					<ul class="navbar-nav mr-auto">
+						<li class="nav-item">
+							<a
+								class="nav-link"
+								th:classappend="${#httpServletRequest.getRequestURI() == '/index' or #httpServletRequest.getRequestURI() == '/' ? 'active' : ''}"
+								th:href="@{/index}"
+								>Índice de Libros</a
+							>
+						</li>
+						<li class="nav-item">
+							<a
+								class="nav-link"
+								th:classappend="${#httpServletRequest.getRequestURI() == '/registrar' ? 'active' : ''}"
+								th:href="@{/registrar}"
+								sec:authorize="hasRole('ROLE_ADMIN')"
+								>Registrar Libro</a
+							>
+						</li>
+					</ul>
+
+					<form
+						class="form-inline my-2 my-lg-0"
+						method="GET"
+						th:action="@{/buscar}"
+					>
+						<input
+							class="form-control mr-sm-2"
+							id="term"
+							name="term"
+							type="search"
+							placeholder="Buscar"
+							aria-label="Buscar"
+						/>
+						<button class="btn btn-outline-success my-2 my-sm-0" type="submit">
+							Buscar
+						</button>
+					</form>
+
+					<div class="navbar-nav navbar-right ml-2">
+<div sec:authorize="!isAuthenticated()">
+<a th:href="@{/login}" class="btn btn-outline-primary">Log in</a>
+</div>
+
+<div class="dropdown" sec:authorize="isAuthenticated()">
+<a class="btn btn-outline-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+<span sec:authentication="name">
+</a>
+
+<div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
+<form th:action="@{/logout}" method="POST">
+<button class="dropdown-item" type="submit">Cerrar Sesión</button>
+</form>
+</div>
+</div>
+
+</div>
+				</div>
+			</nav>
+
+			<div
+				class="alert alert-success"
+				th:if="${success != null}"
+				th:text="${success}"
+			></div>
+			<div
+				class="alert alert-danger"
+				th:if="${error != null}"
+				th:text="${error}"
+			></div>
+			<div
+				class="alert alert-warning"
+				th:if="${warning != null}"
+				th:text="${warning}"
+			></div>
+			<div
+				class="alert alert-info"
+				th:if="${info != null}"
+				th:text="${info}"
+			></div>
+		</header>
+
+		<footer th:fragment="footer" class="container">
+			<script th:src="@{/js/jquery-3.4.1.min.js}"></script>
+			<script th:src="@{/js/popper.min.js}"></script>
+			<script th:src="@{/js/bootstrap.min.js}"></script>
+			<script
+				src="https://kit.fontawesome.com/089b539f1c.js"
+				crossorigin="anonymous"
+			></script>
+		</footer>
+	</body>
+</html>

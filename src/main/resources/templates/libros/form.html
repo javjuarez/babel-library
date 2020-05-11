@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head th:replace="layout/layout :: head"></head>
+
+	<body>
+		<header th:replace="layout/layout :: header"></header>
+
+		<div class="container py-4">
+			<div class="card">
+				<div class="card-header" th:text="${titulo}"></div>
+				<div class="card-body">
+					<form
+						th:action="@{/registrar}"
+						method="post"
+						th:object="${libro}"
+						enctype="multipart/form-data"
+					>
+						<div class="form-group row">
+							<label for="titulo" class="col-sm-2 col-form-label">Título</label>
+							<div class="col-sm-10">
+								<input
+									type="text"
+									class="form-control"
+									th:field="*{titulo}"
+									th:classappend="${#fields.hasErrors('titulo')} ? 'is-invalid' : ''"
+								/>
+								<small
+									class="form-text text-danger"
+									th:if="${#fields.hasErrors('titulo')}"
+									th:errors="*{titulo}"
+								></small>
+							</div>
+						</div>
+
+						<div class="form-group row">
+							<label for="autor" class="col-sm-2 col-form-label">Autor</label>
+							<div class="col-sm-10">
+								<input
+									type="text"
+									class="form-control"
+									th:field="*{autor}"
+									th:classappend="${#fields.hasErrors('autor')} ? 'is-invalid' : ''"
+								/>
+								<small
+									class="form-text text-danger"
+									th:if="${#fields.hasErrors('autor')}"
+									th:errors="*{autor}"
+								></small>
+							</div>
+						</div>
+
+						<div class="form-group row">
+							<label for="editorial" class="col-sm-2 col-form-label"
+								>Editorial</label
+							>
+							<div class="col-sm-10">
+								<input
+									type="text"
+									class="form-control"
+									th:field="*{editorial}"
+									th:classappend="${#fields.hasErrors('editorial')} ? 'is-invalid' : ''"
+								/>
+								<small
+									class="form-text text-danger"
+									th:if="${#fields.hasErrors('editorial')}"
+									th:errors="*{editorial}"
+								></small>
+							</div>
+						</div>
+
+						<div class="form-group row">
+							<label for="fechaPublicacion" class="col-sm-2 col-form-label"
+								>Publicación</label
+							>
+							<div class="col-sm-10">
+								<input
+									type="date"
+									class="form-control"
+									th:field="*{fechaPublicacion}"
+									th:classappend="${#fields.hasErrors('fechaPublicacion')} ? 'is-invalid' : ''"
+								/>
+								<small
+									class="form-text text-danger"
+									th:if="${#fields.hasErrors('fechaPublicacion')}"
+									th:errors="*{fechaPublicacion}"
+								></small>
+							</div>
+						</div>
+
+						<div class="form-group row">
+							<label for="sinopsis" class="col-sm-2 col-form-label"
+								>Sinopsis</label
+							>
+							<div class="col-sm-10">
+								<textarea
+									class="form-control"
+									rows="3"
+									th:field="*{sinopsis}"
+									th:classappend="${#fields.hasErrors('sinopsis')} ? 'is-invalid' : ''"
+								></textarea>
+								<small
+									class="form-text text-danger"
+									th:if="${#fields.hasErrors('sinopsis')}"
+									th:errors="*{sinopsis}"
+								></small>
+							</div>
+						</div>
+
+						<div class="form-group row">
+							<label for="file" class="col-sm-2 col-form-label">Portada</label>
+							<div class="col-sm-10">
+								<input
+									type="file"
+									class="form-control-file"
+									name="file"
+									id="file"
+									accept="image/*"
+								/>
+							</div>
+						</div>
+
+						<p>
+							<button
+								class="btn btn-info dropdown-toggle"
+								type="button"
+								data-toggle="collapse"
+								data-target="#collapseLocalizacion"
+							>
+								Localización
+							</button>
+						</p>
+
+						<div id="collapseLocalizacion" class="collapse">
+							<div class="card card-body">
+								<div class="form-group row">
+									<div class="form-group col-sm-4">
+										<label for="sala" class="col-form-label">Sala</label>
+										<select
+											th:field="*{localizacion.sala}"
+											class="form-control"
+										>
+											<option selected value="">--Elija una opción--</option>
+											<option
+												th:each="sala : ${salas}"
+												th:value="${sala.sala}"
+												th:text="${sala.sala}"
+											></option>
+										</select>
+									</div>
+
+									<div class="form-group col-sm-4">
+										<label for="librero" class="col-form-label">Librero</label>
+										<select
+											th:field="*{localizacion.librero}"
+											class="form-control"
+											disabled
+										>
+											<option selected value="">--Elija una opción--</option>
+										</select>
+									</div>
+
+									<div class="form-group col-sm-4">
+										<label for="estante" class="col-form-label">Estante</label>
+										<select
+											th:field="*{localizacion.estante}"
+											class="form-control"
+											disabled
+										>
+											<option selected value="">--Elija una opción--</option>
+										</select>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="form-group row pt-3">
+							<div class="col-sm-10">
+								<button
+									class="btn btn-success"
+									type="submit"
+									th:text="${botonForm}"
+								></button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+
+		<footer th:replace="layout/layout :: footer"></footer>
+		<script th:replace="libros/js/populate-selects :: javascript"></script>
+	</body>
+</html>
